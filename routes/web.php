@@ -73,6 +73,7 @@ Route::middleware(['admin'])->group(function () {
     Route::get("/admin/user/pdf", "UserController@pdfExport");
     Route::get("/admin/user/excel", "UserController@excelExport");
     Route::get("/admin/user/csv", "UserController@csvExport");
+    Route::post("/admin/user/search", "UserController@search");
 
     Route::get("/admin/product/index", "ProductController@index");
     Route::get("/admin/product/create", "ProductController@create");
@@ -108,4 +109,9 @@ Route::middleware(['admin'])->group(function () {
     Route::post("/admin/top-product/store", "TopProductController@store");
     Route::post("/admin/top-product/delete", "TopProductController@delete");
 
+    Route::get("/admin/coupon/index", "CouponController@index");
+    Route::get("/admin/coupon/create", "CouponController@create");
+    Route::get("admin/coupon/fetch", "CouponController@fetch");
+    Route::post("/admin/coupon/store", "CouponController@store");
+    Route::post("/admin/coupon/delete", "CouponController@delete");
 });

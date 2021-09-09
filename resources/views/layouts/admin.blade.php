@@ -42,6 +42,8 @@ License: You must have a valid license purchased only from themeforest(the above
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="{{ asset('assets/img/1Logo.png') }}" />
 
+    @stack("styles")
+
     <style>
         .elipse {
             background: #fff;
@@ -179,6 +181,14 @@ License: You must have a valid license purchased only from themeforest(the above
                         <li class="nav-item mb-5" data-toggle="tooltip" data-placement="right" data-container="body"
                             data-boundary="window" title="Tipo de Fragancia">
                             <a href="{{ url('/admin/type/index') }}"
+                                class="nav-link btn btn-icon btn-text-white btn-hover-text-white btn-lg">
+                                <i class="flaticon2-hourglass-1 icon-lg"></i>
+                            </a>
+                        </li>
+
+                        <li class="nav-item mb-5" data-toggle="tooltip" data-placement="right" data-container="body"
+                            data-boundary="window" title="Cupones de descuento">
+                            <a href="{{ url('/admin/coupon/index') }}"
                                 class="nav-link btn btn-icon btn-text-white btn-hover-text-white btn-lg">
                                 <i class="flaticon2-hourglass-1 icon-lg"></i>
                             </a>

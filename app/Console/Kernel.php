@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\backup::class
+        Commands\backup::class,
+        'App\Console\Commands\SendCouponEmails'
     ];
 
     /**
@@ -24,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('daily:backup')->dailyAt("04:00");
+        $schedule->command('send:coupon_emails')->hourly();
     }
 
     /**

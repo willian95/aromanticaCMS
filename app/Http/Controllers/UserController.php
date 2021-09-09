@@ -55,4 +55,12 @@ class UserController extends Controller
         return $pdf->stream();
     }
 
+    function search(Request $request){
+
+        $users = User::where("name", "like", '%'.$request->search.'%')->orWhere("email", "like", '%'.$request->search.'%')->take(20)->get();
+        
+        return response()->json(["users" => $users]);
+
+    }
+
 }

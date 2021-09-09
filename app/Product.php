@@ -18,4 +18,10 @@ class Product extends Model
         return $this->hasMany(ProductTypeSize::class);
     }
 
+    public function couponProducts(){
+
+        return $this->hasMany(CouponProduct::class);
+
+    }
+
 }
