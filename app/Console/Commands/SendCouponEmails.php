@@ -73,6 +73,8 @@ class SendCouponEmails extends Command
                 $to_email = $email->email;
                 $title = "Cupón de descuento";
 
+                dd($email);
+
 
                 \Mail::send("emails.massive_emails", $data, function($message) use ($to_email, $title) {
 
