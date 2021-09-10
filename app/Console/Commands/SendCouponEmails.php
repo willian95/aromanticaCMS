@@ -50,6 +50,7 @@ class SendCouponEmails extends Command
         if(Storage::exists('scheduleMonitor.txt')){
 
             $scheduleMonitorContent = Storage::get("scheduleMonitor.txt");
+            dd("aqupi");
             if($scheduleMonitorContent == "finished"){
                 
                 $this->sendEmails();
@@ -72,8 +73,6 @@ class SendCouponEmails extends Command
                 $data = ["couponName" => $email->name, "couponEmail" => $email->email, "products" => $couponProduct,"coupon" => $couponInfo];
                 $to_email = $email->email;
                 $title = "Cupón de descuento";
-
-                dd($email);
 
 
                 \Mail::send("emails.massive_emails", $data, function($message) use ($to_email, $title) {
