@@ -37,6 +37,8 @@ License: You must have a valid license purchased only from themeforest(the above
         type="text/css" />
     <link href="{{ asset('admin/assets/css/style.bundle.css?v=7.0.4') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('alertify/css/alertify.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('alertify/css/themes/bootstrap.css') }}" rel="stylesheet" type="text/css">
     <!--end::Global Theme Styles-->
     <!--begin::Layout Themes(used by all pages)-->
     <!--end::Layout Themes-->
@@ -3006,10 +3008,11 @@ License: You must have a valid license purchased only from themeforest(the above
     <!--begin::Page Scripts(used by this page)-->
     <script src="{{ asset('admin/assets/js/pages/widgets.js?v=7.0.4') }}"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="{{ asset('alertify/alertify.js') }}"></script>
 	<script src="{{ asset('js/app.js') }}"></script>
 	
 	<script>
-
+        
 		function toggleUserOptions(){
 			
 			if($("#user-options-menu").hasClass("show")){
@@ -3021,6 +3024,10 @@ License: You must have a valid license purchased only from themeforest(the above
 		}
 
 	</script>
+
+    <script>
+        alertify.set('notifier', 'position', 'top-right');
+    </script>
 
     @stack("scripts")
 

@@ -271,7 +271,7 @@
                     selectedUsers:[],
                     selectedUsersDetail:[],
 
-                    isDiscountTotal:"total",
+                    isDiscountTotal:"carrito",
                     discountType:"porcentual",
                     discountAmount:"",
                     endDate:"",
@@ -392,87 +392,69 @@
 
 
                 },
-                create(){
-                    this.action = "create"
-                    this.name = ""
-                    this.ml = ""
-                    this.sizeId = ""
-                },
+
                 store(){
-                    this.loading = true
-                    axios.post("{{ url('/admin/coupon/store') }}", {discountType: this.discountType, discountAmount: this.discountAmount, totalDiscount: this.isDiscountTotal, endDate: this.endDate, allUsers: this.allUsers, allProducts: this.allProducts, couponCode: this.couponCode, products: this.selectedProductsDetail, users: this.selectedUsersDetail})
-                    .then(res => {
-                        this.loading = false
-                        
-                        if(res.data.success == true){
 
-                            swal({
-                                "icon": "success",
-                                "text": res.data.msg 
-                            }).then(ans => {
-
-                                window.location.ref="{{ url('/admin/coupon/index') }}"
-
-                            })
-
-                        }else{
-
-                            swal({
-                                "icon": "error",
-                                "text": res.data.msg 
-                            })
-
-                        }
-
-
-                    })
-                    .catch(err => {
-                        this.loading = false
-                        $.each(err.response.data.errors, function(key, value){
-                            alert(value)
-                        });
-                    })
-
-                },
-                update(){
-                    this.loading = true
-                    axios.post("{{ url('admin/size/update') }}", {id: this.sizeId, name: this.name, ml: this.ml})
-                    .then(res => {
-                        this.loading = false
-                        if(res.data.success == true){
-
-                            swal({
-                                title: "Genial!",
-                                text: "Tamaño actualizado!",
-                                icon: "success"
-                            });
-                            this.name = ""
-                            this.sizeId = ""
-                            this.ml = ""
-                            this.fetch()
+                    if(this.validateCouponInfo()){
+                        this.loading = true
+                        axios.post("{{ url('/admin/coupon/store') }}", {discountType: this.discountType, discountAmount: this.discountAmount, totalDiscount: this.isDiscountTotal, endDate: this.endDate, allUsers: this.allUsers, allProducts: this.allProducts, couponCode: this.couponCode, products: this.selectedProductsDetail, users: this.selectedUsersDetail})
+                        .then(res => {
+                            this.loading = false
                             
-                        }else{
+                            if(res.data.success == true){
 
-                            alert(res.data.msg)
+                                swal({
+                                    "icon": "success",
+                                    "text": res.data.msg 
+                                }).then(ans => {
 
-                        }
+                                    window.location.href="{{ url('/admin/coupon/index') }}"
 
-                    })
-                    .catch(err => {
-                        this.loading = false
-                        $.each(err.response.data.errors, function(key, value){
-                            alert(value)
-                        });
-                    })
+                                })
+
+                            }else{
+
+                                swal({
+                                    "icon": "error",
+                                    "text": res.data.msg 
+                                })
+
+                            }
+
+
+                        })
+                        .catch(err => {
+                            this.loading = false
+                            $.each(err.response.data.errors, function(key, value){
+                                alertify.error(value[0])
+                            });
+                        })
+                    }
+
+                    
 
                 },
-                edit(size){
-                    this.modalTitle = "Editar tamaño"
-                    this.action = "edit"
-                    this.name = size.name
-                    this.ml = size.ml
-                    this.sizeId = size.id
+
+                validateCouponInfo(){
+
+                    if(this.allUsers == false && this.selectedUsersDetail.length == 0){
+                        
+                        alertify.error("Debes seleccionar usuarios")
+                        
+                        return false
+                    }
+
+                    if(this.allProducts == false && this.selectedProductsDetail.length == 0){
+                        
+                        alertify.error("Debes seleccionar productos")
+                        
+                        return false
+                    }
+
+                    return true
+
                 },
+
                 fetch(page = 1){
 
                     this.page = page
