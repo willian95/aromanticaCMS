@@ -192,7 +192,7 @@ License: You must have a valid license purchased only from themeforest(the above
                             data-boundary="window" title="Cupones de descuento">
                             <a href="{{ url('/admin/coupon/index') }}"
                                 class="nav-link btn btn-icon btn-text-white btn-hover-text-white btn-lg">
-                                <i class="flaticon2-hourglass-1 icon-lg"></i>
+                                <i class="flaticon2-web-1 icon-lg"></i>
                             </a>
                         </li>
 
