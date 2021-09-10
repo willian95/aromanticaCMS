@@ -51,7 +51,7 @@ class SendCouponEmails extends Command
 
             $scheduleMonitorContent = Storage::get("scheduleMonitor.txt");
             dd($scheduleMonitorContent);
-            if($scheduleMonitorContent == "finished"){
+            if(strpos($scheduleMonitorContent, "finished") > -1){
                 
                 $this->sendEmails();
             }
