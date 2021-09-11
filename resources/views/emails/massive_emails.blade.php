@@ -143,7 +143,7 @@ td .es-button-border-2:hover {
                                             <td style="border: 1px solid grey; font-size: 10px; padding-left: 5px; padding-top: 5px; padding-bottom: 5px;">{{ $productInfo->type->name }}</td>
                                             <td style="border: 1px solid grey; font-size: 10px; padding-left: 5px; padding-top: 5px; padding-bottom: 5px;">{{ $productInfo->size->name }} Oz</td>
                                             <td style="border: 1px solid grey; font-size: 10px; padding-left: 5px; padding-top: 5px; padding-bottom: 5px;">$ {{ number_format($productInfo->price, 0, ",", ".") }}</td>
-                                            <td style="border: 1px solid grey; font-size: 10px; padding-left: 5px; padding-top: 5px; padding-bottom: 5px;"><a href="{{ url('/tienda/producto/'.$productInfo->id) }}">Link</a></td>
+                                            <td style="border: 1px solid grey; font-size: 10px; padding-left: 5px; padding-top: 5px; padding-bottom: 5px;"><a href="{{ env('FRONT_URL').'tienda/producto/'.$productInfo->id }}">Link</a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
