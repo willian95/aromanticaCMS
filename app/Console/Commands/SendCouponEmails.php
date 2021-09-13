@@ -10,6 +10,8 @@ use App\Coupon;
 use App\CouponUser;
 use App\CouponProduct;
 use App\User;
+use App\PromotionMail;
+use App\Newsletter;
 
 class SendCouponEmails extends Command
 {
@@ -54,6 +56,7 @@ class SendCouponEmails extends Command
             if(strpos($scheduleMonitorContent, "finished") > -1){
                 
                 $this->sendEmails();
+                $this->sendPromotionalEmails();
             }
 
         }
@@ -89,6 +92,69 @@ class SendCouponEmails extends Command
                 $massiveEmail->update();
 
                 sleep(1);
+
+            }
+
+            Storage::put("scheduleMonitor.txt", "finished");
+
+
+        }catch(\Exception $e){
+
+            Storage::put("scheduleMonitor.txt", "finished");
+
+        }
+
+    }
+
+    function sendPromotionalEmails(){
+
+        try{
+
+            Storage::put("scheduleMonitor.txt", "started");
+            foreach(PromotionMail::where("sent", 0)->get() as $promotion){    
+
+                $users = User::where("role_id", 2)->get();
+
+                foreach($users as $user){
+
+                    $to_name = $user->name;
+                    $to_email = $user->email;
+                    $data = ["title" => $promotion->title, "body" => $promotion->description, "link" => $promotion->link];
+
+                    \Mail::send("emails.promotion", $data, function($message) use ($to_name, $to_email, $promotion) {
+
+                        $message->to($to_email, $to_name)->subject($promotion->title);
+                        $message->from(env("MAIL_FROM_ADDRESS"), env("MAIL_FROM_NAME"));
+
+                    });
+
+                    sleep(1);
+
+                }
+                
+                if($promotion->include_newsletter == 1){
+                    $newsletterEmails = Newsletter::all();
+               
+                    foreach($newsletterEmails as $guest){
+
+                        $to_email = $guest->email;
+                        $data = ["title" => $promotion->title, "body" => $promotion->description, "link" => $promotion->link];
+
+                        \Mail::send("emails.promotion", $data, function($message) use ($to_email, $promotion) {
+
+                            $message->to($to_email)->subject($promotion->title);
+                            $message->from(env("MAIL_FROM_ADDRESS"), env("MAIL_FROM_NAME"));
+
+                        });
+                        sleep(1);
+                    }
+                }
+
+                $promotionModel = PromotionMail::where("id", $promotion->id)->first();
+                $promotionModel->sent = 1;
+                $promotionModel->update();
+
+               
 
             }
 

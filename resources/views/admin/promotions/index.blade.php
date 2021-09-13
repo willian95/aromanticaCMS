@@ -102,6 +102,11 @@
 
                             <label for="link">Link de redirección (opcional)</label>
                             <input type="text" class="form-control" id="link" v-model="link">
+
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1" v-model="includeNewsletter">
+                                <label class="form-check-label" for="exampleCheck1" >Incluir correos del newsletter</label>
+                            </div>
                             
 
                         </div>
@@ -136,7 +141,8 @@
                     promotions:[],
                     pages:0,
                     page:1, 
-                    loading:false                
+                    loading:false,
+                    includeNewsletter:false                
                 }
             },
             methods:{
@@ -145,10 +151,11 @@
                     this.action = "create"
                     this.name = ""
                     this.brandId = ""
+                    this.includeNewsletter = false
                 },
                 store(){
                     this.loading = true
-                    axios.post("{{ url('/admin/promotions/mail/store') }}", {title: this.title, description: this.description, link: this.link})
+                    axios.post("{{ url('/admin/promotions/mail/store') }}", {title: this.title, description: this.description, link: this.link, includeNewsletter: this.includeNewsletter})
                     .then(res => {
                         this.loading = false
                         if(res.data.success == true){

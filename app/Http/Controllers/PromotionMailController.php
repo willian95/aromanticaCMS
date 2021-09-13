@@ -46,9 +46,10 @@ class PromotionMailController extends Controller
             $promotion->title = $request->title;
             $promotion->body = $request->description;
             $promotion->link = $request->link;
+            $promotion->include_newsletter = $request->includeNewsletter;
             $promotion->save();
 
-            $users = User::where("role_id", 2)->get();
+            /*$users = User::where("role_id", 2)->get();
 
             foreach($users as $user){
 
@@ -65,7 +66,24 @@ class PromotionMailController extends Controller
 
             }
 
-            $guests = GuestUser::all();
+            $newsletterEmails = Newsletter::all();
+
+            foreach($newsletterEmails as $guest){
+
+                $to_name = $guest->name;
+                $to_email = $guest->email;
+                $data = ["title" => $request->title, "body" => $request->description, "link" => $request->link];
+
+                \Mail::send("emails.promotion", $data, function($message) use ($to_name, $to_email, $request) {
+
+                    $message->to($to_email, $to_name)->subject($request->title);
+                    $message->from("ventas@aromantica.co", env("MAIL_FROM_NAME"));
+
+                });
+
+            }
+
+            /*$guests = GuestUser::all();
 
             foreach($guests as $guest){
 
@@ -80,7 +98,7 @@ class PromotionMailController extends Controller
 
                 });
 
-            }
+            }*/
 
             return response()->json(["success" => true, "msg" => "Email de promoción creado"]);
 
