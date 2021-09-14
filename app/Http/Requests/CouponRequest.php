@@ -29,4 +29,16 @@ class CouponRequest extends FormRequest
             "discountAmount" => "required"
         ];
     }
+
+    public function messages()
+    {
+        return [
+            "couponCode.required" => "Código del cupón es requerido",
+            "couponCode.unique" => "Éste código ya existe",
+            "endDate.required" => "Fecha limite es requerida",
+            "endDate.date" => "Fecha limite no tiene un formato correcto",
+            "endDate.after_or_equal" => "Fecha limite está en el pasado",
+            "discountAmount.required" => "Monto a descontar es requerido"
+        ];
+    }
 }

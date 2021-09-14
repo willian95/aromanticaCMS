@@ -119,8 +119,8 @@
                                     <div class="dataTables_paginate paging_full_numbers" id="kt_datatable_paginate">
                                         <ul class="pagination">
                                             
-                                            <li class="paginate_button page-item active" v-for="(link, index) in links">
-                                                <a style="cursor: pointer" aria-controls="kt_datatable" tabindex="0" :class="link.active == false ? linkClass : activeLinkClass":key="index" @click="fetch(link)" v-html="link.label.replace('Previous', 'Anterior').replace('Next', 'Siguiente')"></a>
+                                            <li class="paginate_button page-item active" v-for="(page, index) in totalPages">
+                                                <a style="cursor: pointer" aria-controls="kt_datatable" tabindex="0" :class="page != currentPage ? linkClass : activeLinkClass":key="index" @click="fetch(page)">@{{ page }}</a>
                                             </li>
                                             
                                             
@@ -139,92 +139,19 @@
 
         </div>
 
-        <!-- Modal-->
-        <div class="modal fade" id="users" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Usuarios</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <i aria-hidden="true" class="ki ki-close"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        
-                        <table class="table" v-if="allUsers == 0">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Email</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="user in users">
-                                <td>@{{ user.user.name }}</td>
-                                <td>@{{ user.user.email }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <h4 class="text-center" v-else>Todos los usuarios</h4>
-
-                    </div>
-                    
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Modal-->
-        <div class="modal fade" id="products" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Productos</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <i aria-hidden="true" class="ki ki-close"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        
-                        <table class="table" v-if="allProducts == 0">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Marca</th>
-                                    <th>Presentación</th>
-                                    <th>Tamaño</th>
-                                    <th>Precio</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="product in products">
-                                    <td>@{{ product.product_type_size.product.name }}</td>
-                                    <td>@{{ product.product_type_size.product.brand.name }}</td>
-                                    <td>@{{ product.product_type_size.type.name }}</td>
-                                    <td>@{{ product.product_type_size.size.name }} Oz</td>
-                                    <td>$ @{{ currencyFormatDE(product.product_type_size.price) }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <h4 class="text-center" v-else>Todos los productos</h4>
-
-                    </div>
-                    
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
 @endsection
+
+@push("styles")
+    
+    <style>
+        .active-link{
+            background-color: #2ecc71 !important;
+        }
+    </style>
+
+@endpush
 
 
 @push("scripts")
@@ -238,7 +165,6 @@
 
                     loading:false,
                     coupons:[],
-                    links:[],
                     currentPage:"",
                     totalPages:"",
                     linkClass:"page-link",
@@ -296,13 +222,10 @@
                 async fetch(link = ""){
 
                     this.loading = true
-                    let res = await axios.get(link == "" ? "{{ url('admin/coupon/fetch') }}" : link.url)
-
-                    console.log(res)
+                    let res = await axios.get(link == "" ? "{{ url('admin/coupon/fetch') }}" : "{{ url('admin/coupon/fetch') }}"+"?page="+link)
 
                     this.loading = false
                     this.coupons = res.data.coupons.data
-                    this.links = res.data.coupons.links
                     this.currentPage = res.data.coupons.current_page
                     this.totalPages = res.data.coupons.last_page
 

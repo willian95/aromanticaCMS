@@ -53,7 +53,7 @@ class CouponController extends Controller
 
     function fetch(){
 
-        $coupons = Coupon::with(["couponUsers", "couponProducts", "couponUsers.user", "couponProducts.productTypeSize", "couponProducts.productTypeSize.product", "couponProducts.productTypeSize.size", "couponProducts.productTypeSize.type", "couponProducts.productTypeSize.product.brand"])->paginate(10);
+        $coupons = Coupon::with(["couponUsers", "couponProducts", "couponUsers.user", "couponProducts.productTypeSize", "couponProducts.productTypeSize.product", "couponProducts.productTypeSize.size", "couponProducts.productTypeSize.type", "couponProducts.productTypeSize.product.brand"])->orderBy("id", "desc")->paginate(10);
         return response()->json(["coupons" => $coupons]);
 
     }
